@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,35 +38,153 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  final String title;
+  final List<CameraDescription> cameras;
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
-  final String title;
+class _MyHomePageState extends State<MyHomePage> {
+  Position? _currentPosition;
+  String _currentAddress = 'Localisation en cours de recherche...';
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
 
+  void _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Le service de localisation est désactivé.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error("L'accès à la localisation a été refusé.");
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error("L'accès à la localisation a été refusé pour toujours.");
+    }
+
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      _currentPosition = position;
+      _currentAddress = 'Lat: ${position.latitude}, Lon: ${position.longitude}';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(_currentAddress),
+            const SizedBox(height: 20),
+            const Text('Appuyez sur le bouton pour ouvrir la camera.'),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (widget.cameras.isNotEmpty) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CameraPage(cameras: widget.cameras),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Aucune caméra disponible.')),
+            );
+          }
+        },
+        tooltip: 'Ouvrir la camera',
+        child: const Icon(Icons.camera_alt),
+      ),
+    );
+  }
+}
+
+class CameraPage extends StatefulWidget {
+  final List<CameraDescription> cameras;
+
+  const CameraPage({super.key, required this.cameras});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class CameraPageState extends State<CameraPage> {
+  late CameraController _controller;
+  Future<void>? _initializeControllerFuture;
+  late CameraDescription _currentCamera;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    _currentCamera = widget.cameras.first;
+    _initializeCamera();
+  }
+
+  void _initializeCamera() {
+    _controller = CameraController(
+      _currentCamera,
+      ResolutionPreset.high,
+    );
+
+    _initializeControllerFuture = _controller.initialize();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _takePicture() async {
+    try {
+      await _initializeControllerFuture;
+      final image = await _controller.takePicture();
+
+      if (!mounted) return;
+
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => DisplayPictureScreen(imagePath: image.path),
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _switchCamera() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      if (_currentCamera == widget.cameras.first) {
+        _currentCamera = widget.cameras.last;
+      } else {
+        _currentCamera = widget.cameras.first;
+      }
+      _initializeCamera();
     });
   }
 
@@ -80,13 +198,23 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text('Camera'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.switch_camera),
+            onPressed: _switchCamera,
+          ),
+        ],
+      ),
+      body: FutureBuilder<void>(
+        future: _initializeControllerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return CameraPreview(_controller);
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
