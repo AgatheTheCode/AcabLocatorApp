@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:acab_locator/firebase_options.dart';
+import 'package:acab_locator/pages/auth/auth_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -41,12 +46,17 @@ class MyHomePage extends StatefulWidget {
   final String title;
   final List<CameraDescription> cameras;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+  // Obtain a list of the available cameras on the device.
+  cameras = await availableCameras();
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
+  // Load theme from JSON
+  final themeStr =
+      await rootBundle.loadString('assets/appainter_theme_light.json');
+  final themeJson = jsonDecode(themeStr);
+  final theme = ThemeDecoder.decodeThemeData(themeJson)!;
+
+  // Run the application
+  runApp(MyApp(theme: theme));
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -124,13 +134,28 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class CameraPage extends StatefulWidget {
-  final List<CameraDescription> cameras;
-
-  const CameraPage({super.key, required this.cameras});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+Route<dynamic> generateRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case '/':
+      return MaterialPageRoute(builder: (context) => const HomePage());
+    case '/camera_page':
+      return MaterialPageRoute(
+          builder: (context) => CameraPage(cameras: cameras));
+    case '/display_picture_screen':
+      final args = settings.arguments as String;
+      return MaterialPageRoute(
+          builder: (context) => DisplayPictureScreen(imagePath: args));
+    case '/gallery':
+      return MaterialPageRoute(builder: (context) => Gallery());
+    case '/map':
+      return MaterialPageRoute(builder: (context) => Map());
+    case '/auth/login':
+      return MaterialPageRoute(builder: (context) => const Login());
+    case '/auth/register':
+      return MaterialPageRoute(builder: (context) => Register());
+    default:
+      return MaterialPageRoute(builder: (context) => const HomePage());
+  }
 }
 
 class CameraPageState extends State<CameraPage> {
