@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Map extends StatelessWidget {
+class Gallery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Map'),
+        title: const Text('Gallery'),
       ),
-      body: Center(
-        child: Text('Map Page'),
+      body: const Center(
+        child: Text('Gallery Page'),
       ),
     );
   }

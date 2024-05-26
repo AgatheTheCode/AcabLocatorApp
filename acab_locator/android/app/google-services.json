@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "455736847212",
+    "project_id": "acablocator",
+    "storage_bucket": "acablocator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455736847212:android:32e5e9a01df9c34a6a2149",
+        "android_client_info": {
+          "package_name": "com.acab.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455736847212-r1re95b2kaij2l1a84jia12bam9evq8a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuixiOy-STGYFp2IDQoZeVjmLvo155L_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455736847212-r1re95b2kaij2l1a84jia12bam9evq8a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "455736847212-q2qq5firv2r4t4tidfdvpd47j81psfr4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.acabLocator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455736847212:android:bbec9e4aa52776cf6a2149",
+        "android_client_info": {
+          "package_name": "com.acabloca.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455736847212-r1re95b2kaij2l1a84jia12bam9evq8a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuixiOy-STGYFp2IDQoZeVjmLvo155L_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455736847212-r1re95b2kaij2l1a84jia12bam9evq8a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "455736847212-q2qq5firv2r4t4tidfdvpd47j81psfr4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.acabLocator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455736847212:android:42240a70c5f24dbf6a2149",
+        "android_client_info": {
+          "package_name": "com.acablocat.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455736847212-r1re95b2kaij2l1a84jia12bam9evq8a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuixiOy-STGYFp2IDQoZeVjmLvo155L_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455736847212-r1re95b2kaij2l1a84jia12bam9evq8a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "455736847212-q2qq5firv2r4t4tidfdvpd47j81psfr4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.acabLocator"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
