@@ -100,26 +100,5 @@ class DisplayPictureScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Afficher la photo')),
       body: Image.file(File(imagePath)),
     );
-=======
-Route<dynamic> generateRoute(RouteSettings settings) {
-  switch (settings.name) {
-    case '/':
-      return MaterialPageRoute(builder: (context) => const HomePage());
-    case '/camera_page':
-      return MaterialPageRoute(builder: (context) => CameraPage(cameras: cameras));
-    case '/display_picture_screen':
-      final args = settings.arguments as String;
-      return MaterialPageRoute(builder: (context) => DisplayPictureScreen(imagePath: args));
-    case '/gallery':
-      return MaterialPageRoute(builder: (context) => Gallery());
-    case '/map':
-      return MaterialPageRoute(builder: (context) => Map());
-    case '/auth/login':
-      return MaterialPageRoute(builder: (context) => const Login());
-    case '/auth/register':
-      return MaterialPageRoute(builder: (context) => Register());
-    default:
-      return MaterialPageRoute(builder: (context) => const HomePage());
->>>>>>> Stashed changes
   }
 }
