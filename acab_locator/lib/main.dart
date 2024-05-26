@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:acab_locator/firebase_options.dart';
 import 'package:acab_locator/pages/auth/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,12 +28,13 @@ Future<void> main() async {
 
   // Obtain a list of the available cameras on the device.
   cameras = await availableCameras();
-  
+
   // Load theme from JSON
-  final themeStr = await rootBundle.loadString('assets/appainter_theme_light.json');
+  final themeStr =
+      await rootBundle.loadString('assets/appainter_theme_light.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
-  
+
   // Run the application
   runApp(MyApp(theme: theme));
 }
@@ -67,10 +70,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case '/':
       return MaterialPageRoute(builder: (context) => const HomePage());
     case '/camera_page':
-      return MaterialPageRoute(builder: (context) => CameraPage(cameras: cameras));
+      return MaterialPageRoute(
+          builder: (context) => CameraPage(cameras: cameras));
     case '/display_picture_screen':
       final args = settings.arguments as String;
-      return MaterialPageRoute(builder: (context) => DisplayPictureScreen(imagePath: args));
+      return MaterialPageRoute(
+          builder: (context) => DisplayPictureScreen(imagePath: args));
     case '/gallery':
       return MaterialPageRoute(builder: (context) => Gallery());
     case '/map':
