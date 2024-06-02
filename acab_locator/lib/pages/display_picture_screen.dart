@@ -11,7 +11,9 @@ class DisplayPictureScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Display Picture')),
       body: Center(
-        child: Image.file(File(imagePath)),
+        child: imagePath.isNotEmpty
+            ? Image.file(File(imagePath))
+            : const Text('No image captured'),
       ),
     );
   }

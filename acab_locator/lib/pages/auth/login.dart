@@ -47,7 +47,8 @@ class _LoginState extends State<Login> {
       drawer: const CustomDrawer(),
       body: SafeArea(
         child: Center(
-          child: SingleChildScrollView( // Add SingleChildScrollView to prevent overflow
+          child: SingleChildScrollView(
+            // Add SingleChildScrollView to prevent overflow
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +58,7 @@ class _LoginState extends State<Login> {
                 // logo
                 const Icon(
                   Icons.location_on,
-                  size: 100,
+                  size: 70,
                 ),
 
                 const Text(
@@ -80,7 +81,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
 
                 // email textfield
                 MyTextField(
@@ -114,7 +115,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
 
                 // error message
                 if (errorMessage != null)
@@ -122,18 +123,18 @@ class _LoginState extends State<Login> {
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Text(
                       errorMessage!,
-                      style: TextStyle(color: Colors.red, fontSize: 14),
+                      style: const TextStyle(color: Colors.red, fontSize: 14),
                     ),
                   ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
 
                 // sign in button
                 MyButton(
-                  onTap: signUserIn,
+                  onPressed: signUserIn,
                 ),
 
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
 
                 // or continue with
                 Padding(
@@ -154,15 +155,13 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400]),
+                        child: Divider(thickness: 0.5, color: Colors.grey[400]),
                       ),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
 
                 // google + apple sign in buttons
                 const Row(
@@ -171,14 +170,14 @@ class _LoginState extends State<Login> {
                     // google button
                     SquareTile(imagePath: 'lib/images/googleLogo.png'),
 
-                    SizedBox(width: 25),
+                    SizedBox(width: 15),
 
                     // apple button
                     SquareTile(imagePath: 'lib/images/appleLogo.png')
                   ],
                 ),
 
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
 
                 // not a member? register now
                 Row(
